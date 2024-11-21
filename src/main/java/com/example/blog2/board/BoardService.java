@@ -1,5 +1,6 @@
 package com.example.blog2.board;
 
+import com.example.blog2._core.error.ex.Exception404;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,7 @@ public class BoardService {
     public BoardResponse.UpdateFormDTO 게시글수정화면보기(int id) {
 
         Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("해당 아이디의 게시글이 없습니다.:" + id));
+                .orElseThrow(() -> new Exception404("해당 아이디의 게시글이 없습니다.:" + id));
 
         return new BoardResponse.UpdateFormDTO(board);
     }
@@ -31,7 +32,7 @@ public class BoardService {
     public BoardResponse.DetailDTO 게시글상세보기(int id) {
 
         Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("해당 아이디의 게시글이 없습니다.:" + id));
+                .orElseThrow(() -> new Exception404("해당 아이디의 게시글이 없습니다.:" + id));
 
         return new BoardResponse.DetailDTO(board);
     }
@@ -50,7 +51,7 @@ public class BoardService {
     @Transactional
     public void 게시글수정하기(int id,BoardRequest.UpdateDto updateDto) {
         Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("해당 아이디의 게시글이 없습니다.:" + id));
+                .orElseThrow(() -> new Exception404("해당 아이디의 게시글이 없습니다.:" + id));
         board.update(updateDto.getTitle(), updateDto.getContent());
     }// 영속화 된 객체상태 변경 - update + commit => 더티체킹
 }

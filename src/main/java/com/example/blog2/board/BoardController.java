@@ -52,6 +52,7 @@ public class BoardController {
 
     @PostMapping("/board/save")
     public String save(BoardRequest.SaveDto saveDTO) throws IOException { // x-www는 클래스로 받을 수 있다. // json은 앞에@RequestBody 추가
+
         boardService.게시글쓰기(saveDTO);
 
         return "redirect:/";
