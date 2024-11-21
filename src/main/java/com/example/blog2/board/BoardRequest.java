@@ -1,5 +1,6 @@
 package com.example.blog2.board;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.sql.Timestamp;
@@ -12,7 +13,9 @@ public class BoardRequest {
 
     @Data // getter, setter, toString 생성
     public static class SaveDto {
+        @NotBlank
         private String title;
+        @NotBlank
         private String content;
 
         public Board toEntity(){
@@ -24,7 +27,9 @@ public class BoardRequest {
     @Data
     public static class UpdateDto { 
         //private String id;
+        @NotBlank // 밸리데이션에서 오류
         private String title;
+        @NotBlank
         private String content;
     }
 }

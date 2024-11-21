@@ -1,10 +1,14 @@
 package com.example.blog2.board;
 
+import com.example.blog2._core.error.ex.Exception400;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,7 +55,7 @@ public class BoardController {
 
 
     @PostMapping("/board/save")
-    public String save(BoardRequest.SaveDto saveDTO) throws IOException { // x-www는 클래스로 받을 수 있다. // json은 앞에@RequestBody 추가
+    public String save(@Valid BoardRequest.SaveDto saveDTO, Errors errors) { // x-www는 클래스로 받을 수 있다. // json은 앞에@RequestBody 추가
 
         boardService.게시글쓰기(saveDTO);
 
@@ -75,7 +79,8 @@ public class BoardController {
     }
 
     @PostMapping("/board/{id}/update")
-    public String update(@PathVariable("id") int id,BoardRequest.UpdateDto updateDto, Model model){
+    public String update(@PathVariable("id") int id,@Valid BoardRequest.UpdateDto updateDto, Errors errors , Model model){
+
         //System.out.println("id: " + updateDto.getId());
 
         boardService.게시글수정하기(id,updateDto);
