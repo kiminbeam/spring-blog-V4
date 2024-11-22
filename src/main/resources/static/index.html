@@ -29,6 +29,62 @@
     let root = document.querySelector("#root");
     renderList();
 
+     // list 디자인
+     function renderList(){
+        clear();
+        let dom = `
+             <table border="1">
+                 <thead>
+                     <tr>
+                         <th>번호</th>
+                         <th>제목</th>
+                         <th></th>
+                     </tr>
+                 </thead>
+
+                <tbody id="list-box"> <!--id값 넣을때는 컨벤션/ 카멜X-->
+                    
+                </tbody>
+            </table>
+        `;
+
+        root.innerHTML = dom;
+        sendList();
+
+    }
+
+    function renderListItem(board){
+        let dom = `
+            
+                <td>${board.id}</td>
+                <td>${board.title}</td>
+                <td><a href="javascript:void(0);" onclick="renderDetail(${board.id})">상세보기</a></td>
+            
+        `;
+        let item = document.createElement("tr");
+        item.innerHTML = dom;
+        return item;
+    }
+
+    async function sendList(){
+        
+        // 1. API 요청
+        let response = await fetch("http://localhost:8080/api");
+
+        let responseBody = await response.json();
+
+        // 2. 응답 처리
+        let boards = responseBody.body;
+
+        let listBox = document.querySelector("#list-box");
+        boards.forEach(board => {
+            let item = renderListItem(board);
+            listBox.append(item);
+        });
+
+    }
+
+
     // saveForm 디자인
     function renderSaveForm(){
         clear();
@@ -53,16 +109,7 @@
         // 4. 응답 처리
     }
 
-    function sendList(){
-        
-        // 1. 사용자 입력값 받기
-
-        // 2. JSON 변환
-
-        // 3. API 요청
-
-        // 4. 응답 처리
-    }
+    
 
     function sendDelete(){
         alert("삭제요청 들어옴");
@@ -86,43 +133,6 @@
         // 4. 응답 처리
     }
 
-
-
-    // list 디자인
-    function renderList(){
-        clear();
-        let dom = `
-             <table border="1">
-                 <thead>
-                     <tr>
-                         <th>번호</th>
-                         <th>제목</th>
-                         <th></th>
-                     </tr>
-                 </thead>
-
-                <tbody id="list-box"> <!--id값 넣을때는 컨벤션/ 카멜X-->
-                    
-                </tbody>
-            </table>
-            <button onclick="renderDetail()">상세보기 테스트</button>
-            `;
-
-        root.innerHTML = dom;
-        sendList();
-
-    }
-
-    function renderListItem(){
-        let dom = `
-            <tr>
-                <td>1</td>
-                <td>제목1</td>
-                <td><a href="/detail.html">상세보기</a></td>
-            </tr>
-        `;
-        return dom;
-    }
     
     //after / before / append/ pretend
     // append , pretend = 객체를 넣어야함.
@@ -142,20 +152,37 @@
         root.innerHTML = dom;
     }
 
-    function renderDetail(){
+    async function sendDetail(id){
+        // 1. 사용자 입력값 받기
+        // 3. API 요청
+        let response = await fetch(`http://localhost:8080/api/board/${id}`);
+        // 2. JSON 변환
+        let responseBody = await response.json();
+        // 4. 응답 처리
+        let item = responseBody.body;
+        console.log(item);
+
+        return item;
+    }
+
+
+    async function renderDetail(id){
         clear();
+        let board = await sendDetail(id);
+
+
         let dom = `
-            <form action="http://localhost:8080/board/1/delete" method="post">
-                <button type="button" onclick="sendDelete()">삭제</button>
+            <form>
+                <button type="button" onclick="sendDelete(${board.id})">삭제</button>
             </form>
             <form>
-                <button type="button" onclick="renderUpdateForm()">수정</button>
+                <button type="button" onclick="renderUpdateForm(${board.id})">수정</button>
             </form>
-            <div>
-                번호: 1<br>
-                제목: 제목1<br>
-                내용: 내용1<br>
-                작성일: 2024.11.22<br>
+            <div id="detail-box">
+                번호: ${board.id}<br>
+                제목: ${board.title}<br>
+                내용: ${board.content}<br>
+                작성일: ${board.createdAt}<br>
             </div>
         `;
 
