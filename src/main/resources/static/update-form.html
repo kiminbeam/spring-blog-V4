@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>blog</title>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li>
+            <a href="/list.html">홈</a>
+        </li>
+        <li>
+            <a href="/save-form.html">글쓰기</a>
+        </li>
+    </ul>
+</nav>
+
+<hr>
+
+<section>
+    <!--title=제목6&content=내용6 ----&ndash;&gt; application/x-www-form-urlencoded
+        key 값은 input태그의 name
+        value 값은 input 태그에 사용자가 입력하는 값-->
+    <form action="http://localhost:8080/board/1/update" method="post" enctype="application/x-www-form-urlencoded"> <!-- 1.0 방식-->
+        <input type="text" name="id" value="1" readonly="true"></br>
+        <input type="text" name="title" placeholder="제목1"></br>
+        <input type="text" name="content" placeholder="내용1"></br>
+        <input type="text" name="createdAt" value="2024.11.22" readonly></br>
+        <button type="submit">글 수정하기</button>
+    </form>
+</section>
+
+</body>
+</html>
